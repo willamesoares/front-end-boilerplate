@@ -1,22 +1,24 @@
-# webpack Babel demo
+# Front End Boilerplate
 
-Demonstrates how to use webpack with Babel.
+This setup provides webpack + webpack-dev-server + Babel.  
+With this you can write ES6 code and Sass stylesheets.
 
-Installation:
-
+## Setup
+ - using npm
 ```
-cd webpack-babel-demo/
 npm install
 ```
+ - using yarn
+```
+yarn install
+```
 
-There are three ways in which you can build and run the web app:
+## Run
+```
+npm start
+```
 
-* Build once:
-    * `npm run build`
-    * Open `build/index.html`
-* Watch files continuously, rebuild incrementally, whenever one of them changes:
-    * `npm run watch`
-    * Open `build/index.html`, manually reload page in browser whenever there was a change
-* Hot reloading via webpack dev server:
-    * `npm start`
-    * Go to `http://localhost:8080/`, page reloads automatically when there are changes
+## Build
+```
+npm build
+```

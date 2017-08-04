@@ -1,43 +1,44 @@
-/* global __dirname */
+const path = require('path')
+const webpack = require('webpack')
 
-var path = require('path');
-
-var webpack = require('webpack');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-
-var dir_js = path.resolve(__dirname, 'js');
-var dir_html = path.resolve(__dirname, 'html');
-var dir_build = path.resolve(__dirname, 'build');
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
-    entry: path.resolve(dir_js, 'main.js'),
-    output: {
-        path: dir_build,
-        filename: 'bundle.js'
-    },
-    devServer: {
-        contentBase: dir_build,
-    },
-    module: {
-        loaders: [
-            {
-                loader: 'babel-loader',
-                test: dir_js,
-            }
-        ]
-    },
-    plugins: [
-        // Simply copies the files over
-        new CopyWebpackPlugin([
-            { from: dir_html } // to: output.path
+  context: path.resolve(__dirname, 'src'),
+  entry: ['./app.js', './main.scss'],
+  output: {
+    filename: 'app.bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dist',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: [{
+          loader: 'babel-loader',
+          options: { presets: ['es2015', 'stage-0'] },
+        }],
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract([
+          'css-loader', 'sass-loader'
         ]),
-        // Avoid publishing files when compilation fails
-        new webpack.NoErrorsPlugin()
+      }
     ],
-    stats: {
-        // Nice colored output
-        colors: true
-    },
-    // Create Sourcemaps for the bundle
-    devtool: 'source-map',
-};
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, './dist'),
+    compress: true,
+    port: '4000',
+    stats: 'errors-only',
+  },
+  plugins: [
+    new ExtractTextPlugin({
+      filename: 'main.bundle.css',
+      allChunks: true,
+    }),
+  ],
+}
